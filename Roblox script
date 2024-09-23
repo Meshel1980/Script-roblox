@@ -1,0 +1,29 @@
+-- Function to check if there's a wall between the player and the target
+function isWallBetween(playerPosition, targetPosition)
+    local direction = (targetPosition - playerPosition).unit
+    local distance = (targetPosition - playerPosition).magnitude
+
+    for i = 1, distance, 1 do
+        local checkPosition = playerPosition + direction * i
+        if isWall(checkPosition) then
+            return true
+        end
+    end
+    return false
+end
+
+-- Main aiming function
+function aimAtPlayer(player, target)
+    local playerPosition = player.position
+    local targetPosition = target.position
+
+    if not isWallBetween(playerPosition, targetPosition) then
+        player:aimAt(targetPosition)
+    end
+end
+
+-- Example usage
+local player = getLocalPlayer()
+local target = getClosestTarget()
+
+aimAtPlayer(player, target)
